@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimus - System Interface</title>
+    <title>Optimus - Judicial System</title>
     <style>
+        /* Existing Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -79,21 +80,21 @@
     </style>
 </head>
 <body>
-    <header>Optimus - System Interface</header>
+    <header>Optimus - Judicial System</header>
     <div class="container">
         <!-- Sidebar for Navigation -->
         <div class="sidebar">
             <h3>Systems</h3>
             <ul>
                 <li><strong>Judicial System</strong></li>
-                <li>Political System</li>
+                <li><a href="/political">Political System</a></li>
                 <li>Society</li>
             </ul>
             <h3>Logs</h3>
             <ul>
-                <li>Today's Activities</li>
-                <li>Norm Updates</li>
-                <li>Case Decisions</li>
+                <li id="todays-activities">Today's Activities</li>
+                <li id="norm-updates">Norm Updates</li>
+                <li id="case-decisions">Case Decisions</li>
             </ul>
         </div>
 
@@ -101,19 +102,14 @@
         <div class="main-content">
             <h2>Welcome, Judicial System</h2>
             <div class="notification">
-                <strong>Notification:</strong> Political System has sent a new norm for review.
+                <strong>Notification:</strong> <span id="latest-notification">No notifications yet.</span>
             </div>
-            <div class="log-entry">
-                <strong>Log Entry:</strong> Case #45 was processed with the decision: <em>Unconstitutional</em>.
-            </div>
-            <div class="log-entry">
-                <strong>Log Entry:</strong> Political System enacted Norm #112: Valid.
-            </div>
+            <div id="log-entries"></div>
 
             <!-- Interaction Area -->
             <div class="action-buttons">
-                <button>Mark Norm as Constitutional</button>
-                <button>Request Reform</button>
+                <button onclick="markNormUnconstitutional()">Mark Norm as Unconstitutional</button>
+                <button onclick="requestReform()">Request Reform</button>
             </div>
         </div>
     </div>
@@ -121,5 +117,60 @@
     <footer>
         © 2024 Optimus Interface - Enhancing Rule of Law through Systems Interaction
     </footer>
+
+    <script>
+        // Fetch norms from the backend and populate the logs
+        async function fetchLogs() {
+            try {
+                const response = await fetch('/api/get_norms');
+                const norms = await response.json();
+                const logEntries = document.getElementById('log-entries');
+                logEntries.innerHTML = ''; // Clear existing logs
+                norms.forEach(norm => {
+                    const logEntry = document.createElement('div');
+                    logEntry.className = 'log-entry';
+                    logEntry.innerHTML = `<strong>Norm #${norm.id}:</strong> ${norm.text} - Valid: ${norm.valid}`;
+                    logEntries.appendChild(logEntry);
+                });
+            } catch (error) {
+                console.error('Error fetching logs:', error);
+            }
+        }
+
+        // Mark norm as unconstitutional
+        async function markNormUnconstitutional() {
+            const normId = prompt("Enter the Norm ID to mark as unconstitutional:");
+            if (!normId) return;
+
+            try {
+                const response = await fetch('/api/mark_unconstitutional', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ norm_id: parseInt(normId) })
+                });
+                const result = await response.json();
+
+                if (result.error) {
+                    alert(`Error: ${result.error}`);
+                } else {
+                    alert(`Norm #${result.id} marked as unconstitutional. Valid: ${result.valid}`);
+                    document.getElementById('latest-notification').innerText = `Norm #${result.id} marked as unconstitutional.`;
+                }
+
+                fetchLogs(); // Refresh the logs to show updated norms
+            } catch (error) {
+                console.error('Error marking norm as unconstitutional:', error);
+                alert('An error occurred while marking the norm as unconstitutional.');
+            }
+        }
+
+        // Request reform (placeholder)
+        function requestReform() {
+            alert("Reform requested. This feature is under construction.");
+        }
+
+        // On page load
+        fetchLogs();
+    </script>
 </body>
 </html>

@@ -131,4 +131,5 @@ async def main():
     society = Society()
     await society.simulate()
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

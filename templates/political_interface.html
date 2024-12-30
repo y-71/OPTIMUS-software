@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optimus - Political System Interface</title>
     <style>
+        /* Le CSS reste inchangé */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f2f5;
+            background-color: #f0f8f5;
         }
         header {
             background-color: #4267b2;
@@ -85,38 +86,38 @@
         <div class="sidebar">
             <h3>Systems</h3>
             <ul>
-                <li>Judicial System</li>
+                <li><a href="/judicial">Judicial System</a></li>
                 <li><strong>Political System</strong></li>
                 <li>Society</li>
             </ul>
             <h3>Logs</h3>
             <ul>
-                <li>Today's Activities</li>
-                <li>Citizen Feedback</li>
-                <li>Norm Updates</li>
+                <li id="todays-activities">Today's Activities</li>
+                <li id="citizen-feedback">Citizen Feedback</li>
+                <li id="norm-updates">Norm Updates</li>
             </ul>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
             <h2>Welcome, Political System</h2>
-            <div class="notification">
-                <strong>Notification:</strong> Judicial System flagged Norm #142 as potentially unconstitutional.
+            <div id="notifications">
+                <!-- Notifications will be dynamically loaded here -->
+                <div class="notification">
+                    <strong>Notification:</strong> Judicial System flagged Norm #142 as potentially unconstitutional.
+                </div>
             </div>
-            <div class="notification">
-                <strong>Notification:</strong> Citizen satisfaction dropped by 15% after Regulation #77.
-            </div>
-            <div class="log-entry">
-                <strong>Log Entry:</strong> Created Norm #145: Environmental Policy.
-            </div>
-            <div class="log-entry">
-                <strong>Log Entry:</strong> Revised Norm #140 based on Judicial Feedback.
+            <div id="log-entries">
+                <!-- Logs will be dynamically loaded here -->
+                <div class="log-entry">
+                    <strong>Log Entry:</strong> Created Norm #145: Environmental Policy.
+                </div>
             </div>
 
             <!-- Interaction Area -->
             <div class="action-buttons">
-                <button>Create New Norm</button>
-                <button>Review Judicial Feedback</button>
+                <button onclick="createNewNorm()">Create New Norm</button>
+                <button onclick="reviewJudicialFeedback()">Review Judicial Feedback</button>
             </div>
         </div>
     </div>
@@ -124,5 +125,56 @@
     <footer>
         © 2024 Optimus Interface - Enhancing Rule of Law through Systems Interaction
     </footer>
+
+    <script>
+        // Fetch logs dynamically
+        async function fetchLogs() {
+            const response = await fetch('/api/get_norms');
+            const norms = await response.json();
+            const logEntries = document.getElementById('log-entries');
+            logEntries.innerHTML = ''; // Clear existing logs
+            norms.forEach(norm => {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `<strong>Norm #${norm.id}:</strong> ${norm.text} - Valid: ${norm.valid}`;
+                logEntries.appendChild(logEntry);
+            });
+        }
+
+        // Function to create a new norm
+        async function createNewNorm() {
+            const normText = prompt("Enter a description for the new norm:");
+            if (!normText) return; // If the user cancels
+            const response = await fetch('/api/create_norm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: normText })
+            });
+            const norm = await response.json();
+            alert(`Created Norm #${norm.id}: ${norm.text}`);
+            fetchLogs(); // Update logs dynamically
+        }
+
+        // Function to review judicial feedback
+        async function reviewJudicialFeedback() {
+            const normId = prompt("Enter the Norm ID to review feedback:");
+            if (!normId) return; // If the user cancels
+            const response = await fetch('/api/check_constitutionality', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ norm_id: parseInt(normId) })
+            });
+            const result = await response.json();
+            if (result.error) {
+                alert(`Error: ${result.error}`);
+            } else {
+                alert(`Feedback on Norm #${result.id}: Valid: ${result.valid}`);
+            }
+            fetchLogs(); // Update logs dynamically
+        }
+
+        // On page load, fetch logs
+        fetchLogs();
+    </script>
 </body>
 </html>
