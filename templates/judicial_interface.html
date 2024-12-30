@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimus - System Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+        header {
+            background-color: #4267b2;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        .sidebar {
+            width: 20%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 10px;
+            margin-right: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .main-content {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .notification {
+            background-color: #f0f8ff;
+            border-left: 4px solid #4267b2;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .log-entry {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .action-buttons button {
+            background-color: #4267b2;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .action-buttons button:hover {
+            background-color: #365899;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #ffffff;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>Optimus - System Interface</header>
+    <div class="container">
+        <!-- Sidebar for Navigation -->
+        <div class="sidebar">
+            <h3>Systems</h3>
+            <ul>
+                <li><strong>Judicial System</strong></li>
+                <li>Political System</li>
+                <li>Society</li>
+            </ul>
+            <h3>Logs</h3>
+            <ul>
+                <li>Today's Activities</li>
+                <li>Norm Updates</li>
+                <li>Case Decisions</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Welcome, Judicial System</h2>
+            <div class="notification">
+                <strong>Notification:</strong> Political System has sent a new norm for review.
+            </div>
+            <div class="log-entry">
+                <strong>Log Entry:</strong> Case #45 was processed with the decision: <em>Unconstitutional</em>.
+            </div>
+            <div class="log-entry">
+                <strong>Log Entry:</strong> Political System enacted Norm #112: Valid.
+            </div>
+
+            <!-- Interaction Area -->
+            <div class="action-buttons">
+                <button>Mark Norm as Constitutional</button>
+                <button>Request Reform</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 Optimus Interface - Enhancing Rule of Law through Systems Interaction
+    </footer>
+</body>
+</html>
