@@ -19,8 +19,8 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '/')));
 
 // Ensure the data directory exists
-if (!fs.existsSync('data')) {
-    fs.mkdirSync('data');
+if (!fs.existsSync('/tmp/data')) {
+    fs.mkdirSync('/tmp/data');
 }
 
 // Set up notification manager
@@ -46,7 +46,7 @@ class NotificationManager {
 
     saveNotifications() {
         try {
-            const notificationsFile = path.join('data', 'notifications.json');
+            const notificationsFile = path.join('/tmp/data', 'notifications.json');
             fs.writeFileSync(notificationsFile, JSON.stringify(this.notifications.slice(-100)), 'utf8');
         } catch (e) {
             console.error(`Failed to save notifications: ${e}`);
@@ -55,7 +55,7 @@ class NotificationManager {
 
     loadNotifications() {
         try {
-            const notificationsFile = path.join('data', 'notifications.json');
+            const notificationsFile = path.join('/tmp/data', 'notifications.json');
             if (fs.existsSync(notificationsFile)) {
                 this.notifications = JSON.parse(fs.readFileSync(notificationsFile, 'utf8'));
             }
@@ -193,7 +193,7 @@ function checkDayProgress() {
 }
 
 // Clear notifications on startup
-const notificationsFile = path.join('data', 'notifications.json');
+const notificationsFile = path.join('/tmp/data', 'notifications.json');
 if (fs.existsSync(notificationsFile)) fs.unlinkSync(notificationsFile);
 
 // Start server with Socket.IO
