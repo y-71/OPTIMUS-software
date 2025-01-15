@@ -1,1 +1,0 @@
-don't remove this directory since most of site providers are readonly
