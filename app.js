@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const { Society } = require('./models/minioptimus'); // Replace with actual module
+const { Society } = require('./minioptimus'); // Replace with actual module
 const socketIO = require('socket.io');
 
 const app = express();

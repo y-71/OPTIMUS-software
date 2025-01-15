@@ -4,7 +4,7 @@
   "description": "Optimus: Rule of Law Interactive System --",
   "main": "app.js",
   "scripts": {
-    "start": "npm run start app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
