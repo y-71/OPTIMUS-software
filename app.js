@@ -11,7 +11,7 @@ const { Society } = require('./minioptimus'); // Replace with actual module
 const socketIO = require('socket.io');
 
 const app = express();
-const port = process.env.PORT || 42069;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
