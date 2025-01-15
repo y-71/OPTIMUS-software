@@ -2,13 +2,19 @@
     "version": 2,
     "builds": [
       {
+        "src": "app.js",
+        "use": "@vercel/node"
+      },
+      {
         "src": "templates/**",
         "use": "@vercel/static"
       }
     ],
-    "rewrites": [{ 
-      "source": "/(.*)", 
-      "destination": "/" 
-    }] 
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/app.js"
+      }
+    ]
   }
   
